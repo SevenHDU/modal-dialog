@@ -1,0 +1,73 @@
+body {
+	font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+}
+
+.dialog {
+  position: fixed;
+  top: 150px;
+  left: 35%;
+  width: 400px;
+  z-index: 1000;
+  border: 1px solid black;
+}
+
+.dialog-header{
+	position: relative;
+	padding: 5px 10px;
+}
+
+.dialog-title{
+
+}
+
+.dialog-close{
+	color:#000;
+	font-size: 18px;
+	position:absolute;
+	text-decoration: none;
+	right: 10px;
+	top: 5px;
+}
+.dialog-close:hover{
+	font-weight: bold;
+}
+.dialog-close em {
+	display: none;
+}
+
+.dialog-content{
+	padding: 5px 10px;
+	background-color: white;
+	color:black;
+}
+
+
+/*Metro theme*/
+.blue{
+	background-color: #498BD9;
+	color: white;
+}
+.orange{
+	background-color: #FF680D;
+	color: white;
+}
+.green{
+	background-color: #54D829;
+	color: white;
+}
+.purple{
+	background-color: #DF28C1;
+	color: white;
+}
+.pink{
+	background-color: #F62ED0;
+	color: white;
+}
+
+/**/
+.hide{
+	display: none;
+}
+.show{
+	display: block;
+}
