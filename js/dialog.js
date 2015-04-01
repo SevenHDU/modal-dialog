@@ -12,6 +12,7 @@
 		isAutoClose : false, //是否自动关闭弹出框
 		time : 800, // isAutoClose为true,才有效，自动关闭弹出框时间，单位毫秒
 		staticLoadingSrc : 'images/loading.gif',
+		templateUrl:'',//模板地址
 		mask : '<div style="display:none;top:0px;left:0px;background-color:#000;position:absolute;z-index:1000;opacity:0.3;filter:alpha(opacity=30);"><!--[if IE 6]><iframe src="javascript:false;" frameborder="0" style="width:100%;height:100%;display:block;position:absolute;left:0;top:0;z-index:-1;filter:mask();"></iframe><![endif]--></div>' 
 	};
 		
@@ -30,7 +31,7 @@
 		}
 		this.dom = $.support.boxModel ? document.documentElement : document.body;
 		this.isAbsolute = globalParameters.isIE6 || $.browser.SafariMobile;
-		
+		this.dialogBox ={};
 		this.init();
 	};
 	
@@ -46,6 +47,20 @@
 			if(that.isLoading){
 				that.showLoading();
 			}
+			if(that.templateUrl){
+				$.ajax({
+					url:that.templateUrl,
+					type:"GET",
+					success:function(data){
+						that.setContent(data);
+						that.setCenter();
+					}
+				})
+			}else {
+				that.setContent(that.content);
+				that.setCenter();
+			}
+
 		},
 		//显示遮罩层
 		showMask : function (){
@@ -55,7 +70,7 @@
 			that.mask = $mask;
 			//$mask.bgiframe();
 			//遮罩层显示
-			$mask.show().css({
+			$mask.fadeIn().css({
 				width: Math.max(978, $(window).width()),
 				height: Math.max($(document).height(), $(window).height()),
 				top:0,
@@ -69,10 +84,11 @@
 		selectDialogBox : function (){
 			var that = this;
 			//弹出层对象
-			var $dialogBox = $('.dialog').clone().appendTo('body');
+			var $dialogBox = $('.dialog').clone();
+			$dialogBox.appendTo('body');
 			//$messageBox.uniqueId();
 			that.dialogBox = $dialogBox;
-			return that;
+			console.log("selectDialogBox:" + that.dialogBox.outerWidth());
 		},
 		//填充内容
 		setContent : function (content){
@@ -80,16 +96,17 @@
 			if(content){
 				that.dialogBox.find(".dialog-content").html(content);
 			}
-			else{
+			else if(that.content){
 				that.dialogBox.find(".dialog-content").html(that.content);
 			}
+			console.log("setContent:" + that.dialogBox.outerWidth());
 		},
 		//显示消息框
 		showDialogBox : function (){
 			var that = this;
 			var $dialogBox = that.dialogBox;
 			$dialogBox.find(".dialog-title").html(that.title);
-			that.setContent();
+			//that.setContent();
 
 			//绑定close事件
 			$dialogBox.find(".dialog-close").bind('click',function(){
@@ -102,11 +119,13 @@
 				left: (that.dom.clientWidth - $dialogBox.outerWidth()) / 2 + (that.isAbsolute ? $(window).scrollLeft() : 0),
 				top: (that.dom.clientHeight - $dialogBox.outerHeight()) / 2 + (that.isAbsolute ? $(window).scrollTop() : 0),
 				zIndex: ++ globalParameters.globalzIndex 
-			}).show('slow');
+			}).fadeIn();
 			//显示，并调用openFun
 			if(typeof that.openFun === 'function'){
 				that.openFun();
 			}
+
+			console.log("showDialogBox:" + $dialogBox.outerWidth());
 			
 		},
 		//显示loding效果
@@ -122,12 +141,12 @@
 					$dialogContent.html("<div style='display:none;'>" + htmlString + "</div><img alt='" + title + "' title='" + title + "' src='" + that.staticLoadingSrc + "' />" + title + "");
 				}
 			}, 0);
-			
+			console.log("showLoading:" + that.dialogBox.outerWidth());
 		},
 		//关闭消息框和遮罩层
 		close : function (){
 			var that = this;
-			that.dialogBox.hide("slow",function(){
+			that.dialogBox.fadeOut('slow', function() {
 				that.dialogBox.add(that.mask).remove();
 			});
 			
@@ -144,11 +163,14 @@
 		setCenter : function() {
 			var that = this;
 			var $dialogBox = that.dialogBox;
+			var left= (that.dom.clientWidth - $dialogBox.outerWidth()) / 2 + (that.isAbsolute ? $(window).scrollLeft() : 0);
+			var top = (that.dom.clientHeight - $dialogBox.outerHeight()) / 2 + (that.isAbsolute ? $(window).scrollTop() : 0);
 			$dialogBox.css({
 				position: that.isAbsolute ? 'absolute' : 'fixed',
-				left: (that.dom.clientWidth - $dialogBox.outerWidth()) / 2 + (that.isAbsolute ? $(window).scrollLeft() : 0),
-				top: (that.dom.clientHeight - $dialogBox.outerHeight()) / 2 + (that.isAbsolute ? $(window).scrollTop() : 0)
+				left: left,
+				top: top
 			});
+			console.log("setCenter:" + that.dialogBox.outerWidth());
 		}
 	};
 	//遮罩层重定位

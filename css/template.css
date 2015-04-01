@@ -71,3 +71,26 @@ body {
 .show{
 	display: block;
 }
+
+
+.tc{
+	text-align: center;
+}
+
+
+/**/
+.content-wrap{
+	width: 250px;
+	margin: 10px auto;
+	text-align: left;
+	position: relative;
+}
+.content-wrap label{
+	position:absolute;
+	left:5px;
+}
+
+.content-wrap input{
+	margin-left: 65px;
+	width: 150px;
+}
