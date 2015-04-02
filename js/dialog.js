@@ -9,8 +9,6 @@
 		dragAble: true,
 		dialogType : 'Popup',
 		isLoading : false, //是否带Load效果
-		isAutoClose : false, //是否自动关闭弹出框
-		time : 800, // isAutoClose为true,才有效，自动关闭弹出框时间，单位毫秒
 		staticLoadingSrc : 'images/loading.gif',
 		templateUrl:'',//模板地址
 		mask : '<div style="display:none;top:0px;left:0px;background-color:#000;position:absolute;z-index:1000;opacity:0.3;filter:alpha(opacity=30);"><!--[if IE 6]><iframe src="javascript:false;" frameborder="0" style="width:100%;height:100%;display:block;position:absolute;left:0;top:0;z-index:-1;filter:mask();"></iframe><![endif]--></div>' 
@@ -86,6 +84,9 @@
 			//弹出层对象
 			var $dialogBox = $('.dialog').clone();
 			$dialogBox.appendTo('body');
+			if(that.cssStyle){
+				$dialogBox.addClass(that.cssStyle);
+			}
 			//$messageBox.uniqueId();
 			that.dialogBox = $dialogBox;
 			console.log("selectDialogBox:" + that.dialogBox.outerWidth());
@@ -193,8 +194,5 @@
 		}, 500);
 	});
 	
-	
-	$.Dialog = function(opts) {
-		return new Dialog(opts);
-	};
+	window.Dialog = Dialog;
 })(jQuery,window);
